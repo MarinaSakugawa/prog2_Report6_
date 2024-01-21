@@ -19,7 +19,7 @@ public class Hand {
 
     public void display() {
         for(var card : getCards()) {
-            System.out.println(toString());
+            System.out.println(card.toString());
         }
     }
 
