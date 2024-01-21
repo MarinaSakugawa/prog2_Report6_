@@ -18,7 +18,7 @@ public class Hand {
     }
 
     public void display() {
-        for(Card card : cards) {
+        for(var card : getCards()) {
             System.out.println(toString());
         }
     }
