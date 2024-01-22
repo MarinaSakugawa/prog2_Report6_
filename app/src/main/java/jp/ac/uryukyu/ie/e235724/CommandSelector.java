@@ -1,49 +1,63 @@
 package jp.ac.uryukyu.ie.e235724;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CommandSelector {
     private ArrayList<String> commands;
-    private Scanner scanner;
 
-    CommandSelector() {
-        scanner = new Scanner(System.in);
+    public CommandSelector() {
         commands = new ArrayList<>();
     }
 
-    ArrayList<String> getCommands() {
-        return commands;
+    public void addCommand(String command) {
+        commands.add(command);
     }
 
-    Scanner getScanner() {
-        return scanner;
-    }
-
-    public void addCommand(String command_name) {
-        commands.add(command_name);
-    }
-
-    public void clearCommands() {
-        commands.clear();
-    }
-
-    //promptを表示した上で，ユーザの選択を待つ
     public int waitForUsersCommand(String prompt) {
-        var index = 0;
-        System.out.println(prompt);
-        for(var command : commands) { //選択肢をprint
-            System.out.println(index + ":" + command);
-            index += 1;
-        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        //標準入力から数値を入力
-        while(true) {
-            int target_index = scanner.nextInt();
+        while (true) {
+            try {
+                System.out.println(prompt);
+                displayCommands();
 
-            if (target_index >= 0 && target_index < commands.size()) {
-                return target_index;
+                // 標準入力からの入力がない場合は待機
+                while (!reader.ready()) {
+                    try {
+                        Thread.sleep(100);  // 少し待機して再試行
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                String userInput = reader.readLine();
+
+                try {
+                    int commandNumber = Integer.parseInt(userInput);
+                    if (commandNumber >= 0 && commandNumber < commands.size()) {
+                        return commandNumber;
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid number.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a number.");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }        
+        }
+    }
+
+    private void displayCommands() {
+        System.out.println("Available commands:");
+        for (int i = 0; i < commands.size(); i++) {
+            System.out.println(i + ". " + commands.get(i));
+        }
     }
 }
+
