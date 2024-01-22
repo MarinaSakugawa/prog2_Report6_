@@ -4,20 +4,39 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
+/**
+ * ユーザーのコマンドを選択するためのクラス．
+ */
 public class CommandSelector {
+
+    /**
+     * 選択可能なコマンドのリスト．
+     */
     private ArrayList<String> commands;
 
+    /**
+     * CommandSelector クラスのコンストラクタ．
+     */
     public CommandSelector() {
         commands = new ArrayList<>();
     }
 
+    /**
+     * 選択可能なコマンドを追加する．
+     * 
+     * @param command 追加するコマンド
+     */
     public void addCommand(String command) {
         commands.add(command);
     }
 
+    /**
+     * ユーザーからのコマンドを待つ．
+     * 
+     * @param prompt ユーザーに表示するプロンプト
+     * @return 選択されたコマンドの番号
+     */
     public int waitForUsersCommand(String prompt) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -53,6 +72,9 @@ public class CommandSelector {
         }
     }
 
+    /**
+     * 選択可能なコマンドを表示．
+     */
     private void displayCommands() {
         System.out.println("Available commands:");
         for (int i = 0; i < commands.size(); i++) {
