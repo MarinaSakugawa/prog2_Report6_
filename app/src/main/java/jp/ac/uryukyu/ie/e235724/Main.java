@@ -1,22 +1,37 @@
 package jp.ac.uryukyu.ie.e235724;
 
+import java.util.ArrayList;
+
+/**
+ * ブラックジャックゲームの進行や結果表示を行う．
+ */
 public class Main {
-    private final Deck deck;
-    private final Hand playerHand;
-    private final Hand dealerHand;
 
-    public Main() {
-        this.deck = new Deck();
-        this.playerHand = new Hand();
-        this.dealerHand = new Hand();
-    }
-
+    /**
+     * ゲームの初期化および実行を行う．
+     * 
+     * @param args コマンドライン引数（未使用）
+     */
     public static void main(String[] args) {
-        Main blackjackGame = new Main();
-        blackjackGame.play();
+        Deck deck = new Deck();
+        Hand playerHand = new Hand();
+        Hand dealerHand = new Hand();
+
+        initializeGame(deck, playerHand, dealerHand);
+        playGame(deck, playerHand, dealerHand);
+        displayResult(playerHand, dealerHand);
     }
 
-    private void initializeGame() {
+    /**
+     * ゲームの初期化を行う．
+     * デッキの初期化，シャッフル，プレイヤーとディーラーの初期手札配布を行う．
+     * 初回のカード表示とスコア表示も行われる．
+     * 
+     * @param deck        初期化するデッキ
+     * @param playerHand  プレイヤーの手札
+     * @param dealerHand  ディーラーの手札
+     */
+    private static void initializeGame(Deck deck, Hand playerHand, Hand dealerHand) {
         deck.initializeDeck();
         deck.shuffle();
 
@@ -36,12 +51,23 @@ public class Main {
         System.out.println("Dealer score : " + dealerHand.calculateScore());
     }
 
-    private void playGame() {
+    /**
+     * ゲームの実行を行う．
+     * プレイヤーが hit または stand を選択し，ディーラーがカードを引く．
+     * 
+     * @param deck        ゲームで使用するデッキ
+     * @param playerHand  プレイヤーの手札
+     * @param dealerHand  ディーラーの手札
+     */
+    private static void playGame(Deck deck, Hand playerHand, Hand dealerHand) {
         // ゲームループ
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add("hit");
+        actions.add("stand");
         CommandSelector commandSelector = new CommandSelector();
-        commandSelector.addCommand("hit");
-        commandSelector.addCommand("stand");
-
+        for (var action : actions) {
+            commandSelector.addCommand(action);
+        }
         while (playerHand.calculateScore() < 21) {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
 
@@ -61,7 +87,14 @@ public class Main {
         }
     }
 
-    private void displayResult() {
+    /**
+     * ゲームの結果を表示．
+     * 最終結果と勝者の表示を行う．
+     * 
+     * @param playerHand  プレイヤーの手札
+     * @param dealerHand  ディーラーの手札
+     */
+    private static void displayResult(Hand playerHand, Hand dealerHand) {
         // 最終結果を表示
         System.out.println("Game Result !!");
         System.out.println("Your score : " + playerHand.calculateScore());
@@ -69,11 +102,5 @@ public class Main {
 
         BlackJackGame result = new BlackJackGame();
         System.out.println(result.determineWinner(playerHand, dealerHand));
-    }
-
-    private void play() {
-        initializeGame();
-        playGame();
-        displayResult();
     }
 }
