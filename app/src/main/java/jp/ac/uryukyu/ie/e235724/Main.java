@@ -1,5 +1,6 @@
 package jp.ac.uryukyu.ie.e235724;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -7,6 +8,9 @@ public class Main {
         Deck deck = new Deck();
         Hand playerHand = new Hand();
         Hand dealerHand = new Hand();
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add("hit");
+        actions.add("stand");
 
         deck.initializeDeck();
         deck.shuffle();
@@ -25,14 +29,18 @@ public class Main {
 
         while(true) {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("hit or stand?");
-            String choice = scanner.nextLine().toLowerCase();
+            CommandSelector commandSelector = new CommandSelector();
+            for(var action : actions) {
+                commandSelector.addCommand(action);
+            }
+            int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
+            
 
-            if("hit".equals(choice)) {
+            if(commandNumber == 0) {
                 playerHand.addCard(deck.drawCard());
                 playerHand.display();
                 System.out.println("Your score : " + playerHand.calculateScore());
-            } else if("stand".equals(choice)) {
+            } else if(commandNumber == 1) {
                 while (dealerHand.calculateScore() < 17) {
                     dealerHand.addCard(deck.drawCard());
                 }
