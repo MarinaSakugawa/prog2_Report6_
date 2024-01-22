@@ -27,15 +27,14 @@ public class Main {
         System.out.println("Your score : " + playerHand.calculateScore());
         System.out.println("Dealer score : " + dealerHand.calculateScore());
 
-        while(true) {
-            Scanner scanner = new Scanner(System.in);
-            CommandSelector commandSelector = new CommandSelector();
+        CommandSelector commandSelector = new CommandSelector();
             for(var action : actions) {
                 commandSelector.addCommand(action);
             }
+
+        while(true) {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
             
-
             if(commandNumber == 0) {
                 playerHand.addCard(deck.drawCard());
                 playerHand.display();
