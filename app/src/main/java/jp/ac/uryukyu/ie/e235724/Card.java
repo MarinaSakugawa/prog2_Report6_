@@ -18,6 +18,6 @@ public class Card {
     }
 
     public String toString() {
-        return getRank() + "of" + getSuit();
+        return getRank() + " of " + getSuit();
     }
 }
