@@ -6,9 +6,13 @@ public class Main {
         Deck deck = new Deck();
         Hand playerHand = new Hand();
         Hand dealerHand = new Hand();
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add("hit");
-        actions.add("stand");
+
+        initializeGame(deck, playerHand, dealerHand);
+        playGame(deck, playerHand, dealerHand);
+        displayResult(playerHand, dealerHand);
+    }
+
+    private static void initializeGame(Deck deck, Hand playerHand, Hand dealerHand) {
 
         deck.initializeDeck();
         deck.shuffle();
@@ -23,16 +27,21 @@ public class Main {
         System.out.println("Your card : ");
         playerHand.display();
         System.out.println("Dealer card : ");
-        dealerHand.display(); 
+        dealerHand.display();
 
         System.out.println("Your score : " + playerHand.calculateScore());
         System.out.println("Dealer score : " + dealerHand.calculateScore());
-
-        // ゲームループ
-        CommandSelector commandSelector = new CommandSelector();
-        for(var action : actions) {
-            commandSelector.addCommand(action);
     }
+
+    private static void playGame(Deck deck, Hand playerHand, Hand dealerHand) {
+        // ゲームループ
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add("hit");
+        actions.add("stand");
+        CommandSelector commandSelector = new CommandSelector();
+        for (var action : actions) {
+            commandSelector.addCommand(action);
+        }
         while (playerHand.calculateScore() < 21) {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
 
@@ -50,13 +59,16 @@ public class Main {
                 break;
             }
         }
+    }
 
+    private static void displayResult(Hand playerHand, Hand dealerHand) {
         // 最終結果を表示
         System.out.println("Game Result !!");
         System.out.println("Your score : " + playerHand.calculateScore());
         System.out.println("Dealer score : " + dealerHand.calculateScore());
-        
+
         BlackJackGame result = new BlackJackGame();
         System.out.println(result.determineWinner(playerHand, dealerHand));
     }
 }
+
