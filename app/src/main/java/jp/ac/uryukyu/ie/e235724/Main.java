@@ -1,19 +1,22 @@
 package jp.ac.uryukyu.ie.e235724;
-import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        Hand playerHand = new Hand();
-        Hand dealerHand = new Hand();
+    private final Deck deck;
+    private final Hand playerHand;
+    private final Hand dealerHand;
 
-        initializeGame(deck, playerHand, dealerHand);
-        playGame(deck, playerHand, dealerHand);
-        displayResult(playerHand, dealerHand);
+    public Main() {
+        this.deck = new Deck();
+        this.playerHand = new Hand();
+        this.dealerHand = new Hand();
     }
 
-    private static void initializeGame(Deck deck, Hand playerHand, Hand dealerHand) {
+    public static void main(String[] args) {
+        Main blackjackGame = new Main();
+        blackjackGame.play();
+    }
 
+    private void initializeGame() {
         deck.initializeDeck();
         deck.shuffle();
 
@@ -33,15 +36,12 @@ public class Main {
         System.out.println("Dealer score : " + dealerHand.calculateScore());
     }
 
-    private static void playGame(Deck deck, Hand playerHand, Hand dealerHand) {
+    private void playGame() {
         // ゲームループ
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add("hit");
-        actions.add("stand");
         CommandSelector commandSelector = new CommandSelector();
-        for (var action : actions) {
-            commandSelector.addCommand(action);
-        }
+        commandSelector.addCommand("hit");
+        commandSelector.addCommand("stand");
+
         while (playerHand.calculateScore() < 21) {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
 
@@ -61,7 +61,7 @@ public class Main {
         }
     }
 
-    private static void displayResult(Hand playerHand, Hand dealerHand) {
+    private void displayResult() {
         // 最終結果を表示
         System.out.println("Game Result !!");
         System.out.println("Your score : " + playerHand.calculateScore());
@@ -70,5 +70,10 @@ public class Main {
         BlackJackGame result = new BlackJackGame();
         System.out.println(result.determineWinner(playerHand, dealerHand));
     }
-}
 
+    private void play() {
+        initializeGame();
+        playGame();
+        displayResult();
+    }
+}
