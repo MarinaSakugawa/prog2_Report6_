@@ -44,6 +44,8 @@ public class Main {
         System.out.println("Your score : " + playerHand.calculateScore());
         System.out.println("Dealer score : " + dealerHand.calculateScore());
 
+        BlackJackGame result = new BlackJackGame();
+        System.out.println(result.determineWinner(playerHand, dealerHand));
 
     }
     
