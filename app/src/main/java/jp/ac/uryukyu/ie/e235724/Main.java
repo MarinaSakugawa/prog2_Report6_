@@ -32,9 +32,9 @@ public class Main {
                 commandSelector.addCommand(action);
             }
 
-        while(true) {
+        while(playerHand.calculateScore() < 21) {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
-            
+    
             if(commandNumber == 0) {
                 playerHand.addCard(deck.drawCard());
                 playerHand.display();
@@ -46,7 +46,7 @@ public class Main {
                 break;
             }
         }
-
+        
         System.out.println("Game Result !!");
         System.out.println("Your score : " + playerHand.calculateScore());
         System.out.println("Dealer score : " + dealerHand.calculateScore());
