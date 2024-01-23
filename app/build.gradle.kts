@@ -51,3 +51,8 @@ tasks.withType<Jar> {
         attributes["Main-Class"] = "jp.ac.uryukyu.ie.e235724.Main"
     }
 }
+
+// build.gradle.kts (Kotlin syntax)
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
