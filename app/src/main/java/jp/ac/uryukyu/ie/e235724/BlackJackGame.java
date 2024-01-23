@@ -70,13 +70,16 @@ public class BlackJackGame {
             int commandNumber = commandSelector.waitForUsersCommand("Which do you choose?");
 
             if (commandNumber == 0) {
-                // プレイヤーがヒットを選択
+                // プレイヤーがhitを選択
                 playerHand.addCard(deck.drawCard());
                 System.out.println("Your card : ");
                 playerHand.display();
                 System.out.println("Your score : " + playerHand.calculateScore());
+                if(dealerHand.calculateScore() < 17) {
+                    dealerHand.addCard(deck.drawCard());
+                }
             } else if (commandNumber == 1) {
-                // プレイヤーがスタンドを選択
+                // プレイヤーがstandを選択
                 while (dealerHand.calculateScore() < 17) {
                     dealerHand.addCard(deck.drawCard());
                 }
